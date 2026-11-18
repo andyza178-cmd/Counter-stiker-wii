@@ -1,0 +1,23 @@
+
+name: Comprobar compilador Wii
+
+on:
+  workflow_dispatch:
+
+jobs:
+  comprobar:
+    runs-on: ubuntu-latest
+    container:
+      image: devkitpro/devkitppc:latest
+
+    steps:
+      - name: Descargar proyecto
+        uses: actions/checkout@v4
+
+      - name: Comprobar herramientas
+        run: |
+          echo "Comprobando devkitPPC..."
+          powerpc-eabi-gcc --version
+          echo "DEVKITPRO=$DEVKITPRO"
+          echo "¡Compilador disponible!"
+          
