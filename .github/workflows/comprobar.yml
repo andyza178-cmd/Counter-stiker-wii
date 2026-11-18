@@ -19,14 +19,26 @@ jobs:
           echo "$DEVKITPPC/bin" >> "$GITHUB_PATH"
           export PATH="$DEVKITPPC/bin:$PATH"
 
-      - name: Instalar dependencias gráficas
+      - name: Instalar dependencias
         run: |
-          dkp-pacman -S --noconfirm --needed libfat-ogc ppc-libpng ppc-freetype ppc-libjpeg-turbo
+          dkp-pacman -Syu --noconfirm
+          dkp-pacman -S --needed --noconfirm \
+            libogc \
+            libfat \
+            ppc-libpng \
+            ppc-freetype \
+            ppc-libjpeg-turbo
 
-      - name: Instalar GRRLIB
+      - name: Descargar GRRLIB
         run: |
-          git clone --depth 1 https://github.com/GRRLIB/GRRLIB.git /tmp/GRRLIB
-          make -C /tmp/GRRLIB clean all install
+          git clone --depth 1 \
+            https://github.com/GRRLIB/GRRLIB.git \
+            /tmp/GRRLIB
+
+      - name: Revisar GRRLIB
+        run: |
+          ls -la /tmp/GRRLIB
+          find /tmp/GRRLIB -maxdepth 2 -name Makefile
 
       - name: Compilar juego
         run: |
