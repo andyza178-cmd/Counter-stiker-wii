@@ -19,12 +19,12 @@ jobs:
           echo "$DEVKITPPC/bin" >> "$GITHUB_PATH"
           export PATH="$DEVKITPPC/bin:$PATH"
 
-      - name: Instalar dependencias
+            - name: Instalar dependencias
         run: |
           dkp-pacman -Syu --noconfirm
           dkp-pacman -S --needed --noconfirm \
             libogc \
-            libfat \
+            libfat-ogc \
             ppc-libpng \
             ppc-freetype \
             ppc-libjpeg-turbo
