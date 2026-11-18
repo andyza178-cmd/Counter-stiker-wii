@@ -1,13 +1,12 @@
 
-name: Comprobar compilador Wii
+name: Construir Counter Strike Wii
 
 on:
   workflow_dispatch:
 
 jobs:
-  comprobar:
+  build:
     runs-on: ubuntu-latest
-
     container:
       image: devkitpro/devkitppc:latest
 
@@ -15,12 +14,17 @@ jobs:
       - name: Descargar proyecto
         uses: actions/checkout@v4
 
-      - name: Comprobar herramientas
+      - name: Compilar juego
+        run: make
+       - name: Preparar herramientas
         run: |
-          echo "Comprobando compilador..."
           echo "$DEVKITPPC/bin" >> "$GITHUB_PATH"
           export PATH="$DEVKITPPC/bin:$PATH"
           powerpc-eabi-gcc --version
-          echo "Compilador disponible"
+      - name: Guardar archivo DOL
+        uses: actions/upload-artifact@v4
+        with:
+          name: counter-strike-wii
+          path: counter_strike_wii.dol
+          if-no-files-found: error
           
-        
