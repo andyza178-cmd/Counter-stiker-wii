@@ -13,14 +13,14 @@ jobs:
     steps:
       - name: Descargar proyecto
         uses: actions/checkout@v4
-
-      - name: Compilar juego
-        run: make
-       - name: Preparar herramientas
+      - name: Preparar herramientas
         run: |
           echo "$DEVKITPPC/bin" >> "$GITHUB_PATH"
           export PATH="$DEVKITPPC/bin:$PATH"
           powerpc-eabi-gcc --version
+      - name: Compilar juego
+        run: make
+
       - name: Guardar archivo DOL
         uses: actions/upload-artifact@v4
         with:
