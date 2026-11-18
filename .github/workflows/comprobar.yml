@@ -13,13 +13,25 @@ jobs:
     steps:
       - name: Descargar proyecto
         uses: actions/checkout@v4
+
       - name: Preparar herramientas
         run: |
           echo "$DEVKITPPC/bin" >> "$GITHUB_PATH"
           export PATH="$DEVKITPPC/bin:$PATH"
-          powerpc-eabi-gcc --version
+
+      - name: Instalar dependencias gráficas
+        run: |
+          dkp-pacman -S --noconfirm --needed libfat-ogc ppc-libpng ppc-freetype ppc-libjpeg-turbo
+
+      - name: Instalar GRRLIB
+        run: |
+          git clone --depth 1 https://github.com/GRRLIB/GRRLIB.git /tmp/GRRLIB
+          make -C /tmp/GRRLIB clean all install
+
       - name: Compilar juego
-        run: make
+        run: |
+          export PATH="$DEVKITPPC/bin:$PATH"
+          make
 
       - name: Guardar archivo DOL
         uses: actions/upload-artifact@v4
